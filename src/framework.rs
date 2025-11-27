@@ -1,5 +1,6 @@
 use std::{collections::HashMap, fs, path::Path, time::Instant};
 
+use colored::*;
 use log::debug;
 
 pub type PartFn = fn(&str) -> String;
@@ -63,7 +64,12 @@ pub fn run_part(part: u8, partfn: PartFn, input: &str) {
     let start = Instant::now();
     let out = partfn(input);
     let t = start.elapsed();
-    println!("  Part {part}: {out}   ({:?})", t);
+    println!(
+        "  Part {:<6}: {:<20}   ({:<10})",
+        part.to_string().bold().red(),
+        out.to_string().bold().yellow(),
+        format!("{:?}", t).underline().green()
+    );
 }
 
 pub fn run_day(day: &str, reg: &Registry, parts: Vec<u8>) -> anyhow::Result<()> {
@@ -71,7 +77,10 @@ pub fn run_day(day: &str, reg: &Registry, parts: Vec<u8>) -> anyhow::Result<()> 
     let input = get_input(day)?;
     let entry = reg.days.get(day).expect("Day not registered");
 
-    println!("====== {day} ======");
+    println!(
+        "===================== {} =====================",
+        day.to_string().italic().green()
+    );
 
     for p in parts {
         match p {
