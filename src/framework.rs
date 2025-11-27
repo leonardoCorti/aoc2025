@@ -60,12 +60,13 @@ pub fn get_input(day: &str) -> anyhow::Result<String> {
     Ok(text)
 }
 
-pub fn run_part(part: u8, partfn: PartFn, input: &str) {
+pub fn run_part(day: &str, part: u8, partfn: PartFn, input: &str) {
     let start = Instant::now();
     let out = partfn(input);
     let t = start.elapsed();
     println!(
-        "  Part {:<6}: {:<20}   ({:<10})",
+        " Day {:<02}  Part {:<6}: {:<20}   ({:<10})",
+        day.bold().red(),
         part.to_string().bold().red(),
         out.to_string().bold().yellow(),
         format!("{:?}", t).underline().green()
@@ -84,8 +85,8 @@ pub fn run_day(day: &str, reg: &Registry, parts: Vec<u8>) -> anyhow::Result<()> 
 
     for p in parts {
         match p {
-            1 => run_part(1, entry.part1, &input),
-            2 => run_part(2, entry.part2, &input),
+            1 => run_part(day, 1, entry.part1, &input),
+            2 => run_part(day, 2, entry.part2, &input),
             _ => panic!("Part must be 1 or 2"),
         }
     }
