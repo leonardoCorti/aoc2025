@@ -1,24 +1,23 @@
-use log::trace;
-
 use crate::framework::Registry;
 
-macro_rules! register_day {
-    ($reg:expr, $daymod:ident) => {
+macro_rules! register_day_and_module {
+    ($( $daymod:ident ),+) => {
+        $(
+        pub mod $daymod;
+        )+
+
+        pub fn register_all(reg: &mut Registry) {
+        $(
         let name = stringify!($daymod);
         let short = &name[3..];
 
-        $reg.register(short, $daymod::part1, $daymod::part2);
-        trace!("Registered day {name}")
+        reg.register(short, $daymod::part1, $daymod::part2);
+        )+
+        }
     };
 }
 
-pub mod day00;
-pub mod day01;
-
-pub fn register_all(reg: &mut Registry) {
-    register_day!(reg, day00);
-    register_day!(reg, day01);
-}
+register_day_and_module!(day00, day01);
 
 #[macro_export]
 macro_rules! generate_tests {
