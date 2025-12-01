@@ -54,6 +54,12 @@ pub fn get_input(day: &str) -> anyhow::Result<String> {
         return Err(anyhow::anyhow!("Input not found"));
     }
 
+    if text
+        == "Please don't repeatedly request this endpoint before it unlocks! The calendar countdown is synchronized with the server time; the link will be enabled on the calendar the instant this puzzle becomes available.\n"
+    {
+        return Err(anyhow::anyhow!("Input not unlocked yet"));
+    }
+
     fs::create_dir_all("input")?;
     fs::write(&path, &text)?;
 
