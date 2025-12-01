@@ -6,8 +6,8 @@ day := `today=$(date +%Y%m%d); if [ "$today" -lt "20251201" ]; then echo 00; eli
 
 table +DAYS:
   #!/bin/env bash
-  echo "| day | part | time |"
-  cargo r -q -- {{DAYS}} | grep 'Day' | while read -r line; do
+  # echo "| day | part | time |"
+  cargo r -q -r -- {{DAYS}} | grep 'Day' | while read -r line; do
   day=$(echo "$line" | sed -E 's/Day ([0-9]+)  Part.*/\1/')
   part=$(echo "$line" | sed -E 's/.*Part ([0-9]+).*/\1/')
   time=$(echo "$line" | sed -E 's/.*\((.*)\)/\1/')

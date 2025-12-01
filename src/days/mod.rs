@@ -13,9 +13,11 @@ macro_rules! register_day {
 }
 
 pub mod day00;
+pub mod day01;
 
 pub fn register_all(reg: &mut Registry) {
     register_day!(reg, day00);
+    register_day!(reg, day01);
 }
 
 #[macro_export]

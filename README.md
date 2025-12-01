@@ -18,3 +18,7 @@ just table 01 02
 ```
 
 ## performance
+
+| day | part | time |
+| 01 | 1 | 126.682µs  |
+| 01 | 2 | 102.447µs  |

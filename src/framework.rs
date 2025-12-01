@@ -38,14 +38,14 @@ pub fn get_input(day: &str) -> anyhow::Result<String> {
     let session = std::env::var("AOC_SESSION").expect("Set AOC_SESSION environment variable!");
 
     let url = format!(
-        "https://adventofcode.com/2024/day/{}/input",
-        day.trim_start_matches("day"),
+        "https://adventofcode.com/2025/day/{}/input",
+        day.trim_start_matches("day").trim_start_matches("0"),
     );
 
     println!("Downloading input for {day}…");
 
     let text = reqwest::blocking::Client::new()
-        .get(url)
+        .get(&url)
         .header("Cookie", format!("session={session}"))
         .send()?
         .text()?;
