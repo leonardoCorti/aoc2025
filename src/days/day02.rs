@@ -1,6 +1,6 @@
-use std::ops::Range;
-
 use log::{debug, trace};
+use rayon::prelude::*;
+use std::ops::Range;
 
 fn parse_all(input: &str) -> Vec<Range<usize>> {
     let mut result: Vec<Range<usize>> = Vec::new();
@@ -18,20 +18,11 @@ fn parse_all(input: &str) -> Vec<Range<usize>> {
     result
 }
 
-fn count_invalid_id(input: &Range<usize>) -> usize {
-    let mut count = 0;
-    debug!("the range {input:?}");
-    let input = input.clone();
-    for n in input {
-        if n == 1188511885 {
-            debug!("{n} raggiunto");
-        }
-        if !check_valid_id(n) {
-            count += n;
-        }
-    }
-    debug!(" has count {count}");
-    count
+fn count_invalid_id(input: Range<usize>) -> usize {
+    input
+        .into_par_iter()
+        .filter(|input: &usize| !check_valid_id(*input))
+        .sum()
 }
 
 fn check_valid_id(input: usize) -> bool {
@@ -54,26 +45,17 @@ pub fn part1(input: &str) -> String {
     let ranges = parse_all(input);
     debug!("{:?}", ranges);
     ranges
-        .iter()
+        .into_par_iter()
         .map(count_invalid_id)
         .sum::<usize>()
         .to_string()
 }
 
-fn count_invalid_id_v2(input: &Range<usize>) -> usize {
-    let mut count = 0;
-    debug!("the range {input:?}");
-    let input = input.clone();
-    for n in input {
-        if n == 1188511885 {
-            debug!("{n} raggiunto");
-        }
-        if !check_valid_id_v2(n) {
-            count += n;
-        }
-    }
-    debug!(" has count {count}");
-    count
+fn count_invalid_id_v2(input: Range<usize>) -> usize {
+    input
+        .into_par_iter()
+        .filter(|input: &usize| !check_valid_id_v2(*input))
+        .sum()
 }
 
 fn check_valid_id_v2(input: usize) -> bool {
@@ -101,7 +83,7 @@ fn check_valid_id_v2(input: usize) -> bool {
 pub fn part2(input: &str) -> String {
     let ranges = parse_all(input);
     ranges
-        .iter()
+        .into_par_iter()
         .map(count_invalid_id_v2)
         .sum::<usize>()
         .to_string()
