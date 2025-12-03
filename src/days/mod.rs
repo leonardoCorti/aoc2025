@@ -17,7 +17,7 @@ macro_rules! register_day_and_module {
     };
 }
 
-register_day_and_module!(day00, day01, day02);
+register_day_and_module!(day00, day01, day02, day03);
 
 #[macro_export]
 macro_rules! generate_tests {
