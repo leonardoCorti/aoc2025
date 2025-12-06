@@ -31,7 +31,7 @@ impl std::str::FromStr for Cell {
 }
 
 pub fn part1(input: &str) -> String {
-    let map: Grid<Cell> = Grid::from_ascii(input.trim()).expect("could not parse map");
+    let map: Grid<Cell> = Grid::from_chars(input.trim()).expect("could not parse map");
     debug!("the map parsed is:\n{}", map);
 
     map.into_iter()
@@ -48,7 +48,7 @@ pub fn part1(input: &str) -> String {
 }
 
 pub fn part2(input: &str) -> String {
-    let mut map: Grid<Cell> = Grid::from_ascii(input.trim()).expect("could not parse map");
+    let mut map: Grid<Cell> = Grid::from_chars(input.trim()).expect("could not parse map");
     debug!("the map parsed is:\n{}", map);
     let mut rolls_removed = 0;
 

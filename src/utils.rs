@@ -2,8 +2,8 @@ use std::{fmt::Display, str::FromStr};
 
 #[derive(Debug)]
 pub struct Grid<T> {
-    width: usize,
-    height: usize,
+    pub width: usize,
+    pub height: usize,
     cells: Vec<T>,
 }
 
@@ -90,6 +90,14 @@ impl<T> Grid<T> {
         }
         result
     }
+
+    pub fn iter_row(&self, y: usize) -> impl Iterator<Item = ((usize, usize), &T)> {
+        (0..self.width).map(move |x| ((x, y), &self.cells[self.coordinate_to_index(x, y)]))
+    }
+
+    pub fn iter_column(&self, x: usize) -> impl Iterator<Item = ((usize, usize), &T)> {
+        (0..self.height).map(move |y| ((x, y), &self.cells[self.coordinate_to_index(x, y)]))
+    }
 }
 
 impl<T: Display> Display for Grid<T> {
@@ -108,7 +116,7 @@ impl<T> Grid<T>
 where
     T: FromStr,
 {
-    pub fn from_ascii(input: &str) -> Result<Self, T::Err> {
+    pub fn from_chars(input: &str) -> Result<Self, T::Err> {
         let lines: Vec<&str> = input.lines().collect();
         let height = lines.len();
         let width = lines.first().map(|l| l.len()).unwrap_or(0);
@@ -124,6 +132,32 @@ where
             }
         }
 
+        Ok(Self {
+            width,
+            height,
+            cells,
+        })
+    }
+
+    pub fn from_ascii(input: &str, separator: Option<&str>) -> Result<Self, T::Err> {
+        let lines: Vec<&str> = input.lines().collect();
+        let height = lines.len();
+        let width = match separator {
+            Some(_substring) => todo!(),
+            None => lines
+                .first()
+                .map(|l| l.split_whitespace().count())
+                .unwrap_or(0),
+        };
+
+        let mut cells = Vec::with_capacity(width * height);
+
+        for line in lines {
+            for el in line.split_whitespace() {
+                let value = T::from_str(el)?;
+                cells.push(value);
+            }
+        }
         Ok(Self {
             width,
             height,
